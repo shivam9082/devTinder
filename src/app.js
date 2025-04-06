@@ -1,13 +1,22 @@
 const express = require('express');
 const app = express();
 
-//function inside app.use() is known as route handler..
-app.get("/user",function(req,res){
 
- //res.send("user get method is called successfully.");
- // if no response is sent then the url be in infinite loop..
- // so we have to send the response using res.send('something');
-});
+app.get("/user",(req,res,next)=>{
+console.log('response1');
+next();
+},[(req,res,next)=>{
+    console.log('response2');
+    next();
+},(req,res,next)=>{
+    console.log('response3');
+    next();
+}],
+(req,res)=>{
+    console.log('resp4');
+    res.send('hello client');
+}
+);
 
 
 
