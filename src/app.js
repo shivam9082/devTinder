@@ -3,19 +3,12 @@ const app = express();
 
 //function inside app.use() is known as route handler..
 app.get("/user",function(req,res){
- res.send("user get method is called successfully.");
+
+ //res.send("user get method is called successfully.");
+ // if no response is sent then the url be in infinite loop..
+ // so we have to send the response using res.send('something');
 });
 
-app.post("/user",function(req,res){
-    res.send("user post method is called successfully.");
-   });
-
-   app.delete("/user",function(req,res){
-    res.send("user delete method is called successfully.");
-   });
-app.use("/",function(req,res){
-    res.send('server is listening on port 3000 on route /');
-});
 
 
 
