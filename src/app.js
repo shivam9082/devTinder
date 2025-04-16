@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const connectDB = require("./config/database");
 const User = require("./models/user");
+const {validateSignUp} = require("./utils/validation");
+const bcrypt = require("bcrypt");
 
 // middleware provided by the express
 app.use(express.json());
@@ -82,11 +84,24 @@ app.get("/feed",async (req,res)=>{
     }
 });
 
-app.post("/signup",async (req,res)=>{
-    const user = new User(req.body);
-    
+app.post("/signup",async (req,res)=>{ 
     try{
-        await user.save();
+
+        const {firstName,lastName,emailId,password} = req.body;
+        
+
+        //validation of data
+    validateSignUp(req);
+
+    // encrypt the password
+    const hashPassword = await bcrypt.hash(password,10);
+    const user = new User({
+        firstName,
+        lastName,
+        emailId,
+        password:hashPassword
+    });
+    await user.save();
     res.send("User data saved successfully");
     }
     catch(err){
